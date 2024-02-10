@@ -1,0 +1,78 @@
+provider "aws" {
+
+}
+
+# Define VPC
+resource "aws_vpc" "example_vpc" {
+  cidr_block = "10.0.0.0/16"
+  enable_dns_support = true
+  enable_dns_hostnames = true
+
+  tags = {
+    Name = "example-vpc"
+  }
+}
+
+# Create Public Subnet
+resource "aws_subnet" "public_subnet" {
+  vpc_id                  = aws_vpc.example_vpc.id
+  cidr_block              = "10.0.1.0/24"
+  availability_zone       = "ap-south-1a"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "public-subnet"
+  }
+}
+
+# Create Private Subnet
+resource "aws_subnet" "private_subnet" {
+  vpc_id     = aws_vpc.example_vpc.id
+  cidr_block = "10.0.2.0/24"
+  availability_zone       = "ap-south-1a"
+
+  tags = {
+    Name = "private-subnet"
+  }
+}
+
+# Create Internet Gateway
+resource "aws_internet_gateway" "example_igw" {
+  vpc_id = aws_vpc.example_vpc.id
+
+  tags = {
+    Name = "example-igw"
+  }
+}
+
+# Attach Internet Gateway to Public Subnet
+resource "aws_route_table" "public_subnet_rt" {
+  vpc_id = aws_vpc.example_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.example_igw.id
+  }
+
+  tags = {
+    Name = "public-subnet-rt"
+  }
+}
+
+resource "aws_route_table_association" "public_subnet_assoc" {
+  subnet_id      = aws_subnet.public_subnet.id
+  route_table_id = aws_route_table.public_subnet_rt.id
+}
+
+# Output
+output "vpc_id" {
+  value = aws_vpc.example_vpc.id
+}
+
+output "public_subnet_id" {
+  value = aws_subnet.public_subnet.id
+}
+
+output "private_subnet_id" {
+  value = aws_subnet.private_subnet.id
+}

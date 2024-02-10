@@ -1,0 +1,14 @@
+provider "aws" {
+  region = "us-east-1" # You can change the region as needed
+}
+
+resource "aws_s3_bucket" "my_bucket" {
+  bucket = "your-unique-bucket-name" # Change this to a unique name for your bucket
+
+  acl    = "private" # Access Control List, you can modify this based on your needs
+
+  tags = {
+    Name        = "MyS3Bucket"
+    Environment = "Production"
+  }
+}

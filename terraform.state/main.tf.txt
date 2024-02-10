@@ -1,0 +1,13 @@
+provider "aws" {
+  region = "us-east-1"  #have configured below as per reagion (ami & subnet)
+}
+
+resource "aws_instance" "suyash" {
+  instance_type = "t2.micro"
+  ami = "ami-023c11a32b0207432"               
+  subnet_id = "subnet-0ddb871813341fe5e"
+}
+
+resource "aws_s3_bucket" "s3_bucket" {
+  bucket = "suyash-s3-demo-xyz"
+}

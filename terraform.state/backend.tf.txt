@@ -1,0 +1,13 @@
+terraform {
+  backend "s3" {
+    bucket = "suyash-s3-demo-xyz"
+    region = "us-east-1"
+    key = "suyash/terraform.tfstate"  
+  }
+}
+
+
+
+
+
+#while creating ec2 we are creating s3 bucket and configuring "terraform.tfstate" file

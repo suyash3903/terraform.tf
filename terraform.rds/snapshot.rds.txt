@@ -1,0 +1,12 @@
+resource "aws_db_instance" "example-suyash" {
+  # Other configuration parameters...
+
+  skip_final_snapshot      = false
+  final_snapshot_identifier = "final-snapshot-name"
+}
+
+
+
+
+
+#if you want to create snap then Make sure to replace "final-snapshot-name" with a unique name for your final snapshot.

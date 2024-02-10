@@ -1,0 +1,20 @@
+provider "aws" {
+  region = "us-east-1" # Change this to your desired AWS region (i gave ap-south-1 while performing)
+}
+
+variable "bucket_names" {
+  type    = list(string)
+  default = ["bucketbingo", "bucketmingo", "buckettingo"] # Add your desired bucket names here
+}
+
+resource "aws_s3_bucket" "s3_buckets" {
+  count = length(var.bucket_names)
+
+  bucket = var.bucket_names[count.index]
+  acl    = "private" # You can customize the access control as needed
+
+  tags = {
+    Name        = var.bucket_names[count.index]
+    Environment = "Production" # Customize tags as needed
+  }
+}
